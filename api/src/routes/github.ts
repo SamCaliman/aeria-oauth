@@ -65,7 +65,7 @@ githubRouter.POST('/githubAuth', async(context)=>{
         },
       })
       if (userInsertError){
-        console.log(userInsertError)
+        return console.log(userInsertError)
       }
       console.log(userInsertResult)
     }

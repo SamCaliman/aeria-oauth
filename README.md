@@ -19,6 +19,20 @@ $ npm run dev
 
 You may sign in into your application visiting `http://localhost:8080/user/signin`.
 
+## for the Env files
+### api
+```
+GITHUB_CLIENT_ID = your_client_id
+
+GITHUB_CLIENT_SECRET = your_client_secret
+
+```
+
+### web
+```
+VITE_GITHUB_CLIENT_ID = your_client_id
+
+```
 
 ## Support
 
