@@ -1,4 +1,5 @@
 import { createRouter } from 'aeria'
+import { authenticate } from 'aeria-sdk';
 
 export const githubRouter = createRouter()
 
@@ -47,7 +48,7 @@ githubRouter.POST('/githubAuth', async(context)=>{
 
     const { error: userError ,result: userResult } = await context.collections.user.functions.get({
       filters: {
-        github_id: gitTempUser.id,
+        github_id: gitTempUser.id.toString(),
       },
     })
 
@@ -59,8 +60,8 @@ githubRouter.POST('/githubAuth', async(context)=>{
         what: {
           name: gitTempUser.login,
           active: true,
-          github_id: gitUserId,
-          roles: <any[]>['root'] as any,
+          github_id: gitUserId.toString(),
+          roles: ['root'],
           email: `${gitTempUser.login}@user.github.com`,
         },
       })
@@ -70,12 +71,11 @@ githubRouter.POST('/githubAuth', async(context)=>{
       console.log(userInsertResult)
     }
     if (userResult){
-      console.log(gitTempUser)
-      //console.log(userResult)
+      //console.log(gitTempUser)
+      console.log(userResult)
     }
-
+    authenticate()
     //console.log(gitTempUser.id)
-
   } catch (error) {
     console.log('err', error)
   }

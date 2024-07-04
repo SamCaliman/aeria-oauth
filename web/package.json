@@ -17,8 +17,8 @@
   "dependencies": {
     "@aeria-ui/i18n-en": "^0.0.3",
     "aeria-app-layout": "^0.0.40",
-    "aeria-sdk": "^0.0.107",
-    "aeria-ui": "^0.0.76"
+    "aeria-sdk": "^0.0.109",
+    "aeria-ui": "^0.0.78"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
