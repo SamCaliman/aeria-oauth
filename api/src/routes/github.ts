@@ -53,22 +53,19 @@ githubRouter.POST('/githubAuth', async(context)=>{
   })
 
   if(userError){
-    const gitUserId = gitTempUser.id
     const { error: userInsertError, result: userInsertResult } = await context.collections.user.functions.insert({
       what: {
         name: gitTempUser.login,
         active: true,
-        github_id: gitUserId.toString(),
+        github_id: gitTempUser.id.toString(),
         roles: ['root'],
         email: `${gitTempUser.login}@user.github.com`,
       },
     })
     if (userInsertError){
-      return context.error(HTTPStatus.InternalServerError, {code: userInsertError.code})
+      return Result.error(userInsertError)
     }
     return Result.result(await successfulAuthentication(userInsertResult._id, context))
   }
-  if (user){
-    return Result.result(await successfulAuthentication(user._id, context))
-  }
+  return Result.result(await successfulAuthentication(user._id, context))
 })

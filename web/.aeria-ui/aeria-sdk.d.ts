@@ -549,9 +549,6 @@ declare type MirrorRouter = {
   },
   "/github/githubAuth": {
     "POST": null
-  },
-  "/user/createGithubUser": {
-    "POST": null
   }
 }
 

@@ -18,14 +18,14 @@ onMounted(async ()=>{
         const {error,result}: Result.Either<EndpointError, SuccessfulAuthentication>= await aeria.github.githubAuth.POST({
             code: gitTempCode
         }) as any
-        console.log(result)
-        if(result){
-          userStore.$actions.setCurrentUser(result)
-          window.open('http://localhost:8080/dashboard', '_self')
-        }
         if(error){
-          window.open('http://localhost:8080/githubAuth')
+          router.push('/githubAuth')
+          //window.open('http://localhost:8080/githubAuth', '_self')
+          return
         }
+        userStore.$actions.setCurrentUser(result)
+        router.push('/dashboard')
+        //window.open('http://localhost:8080/dashboard', '_self')
     }
 })
 
