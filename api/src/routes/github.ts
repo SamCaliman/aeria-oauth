@@ -2,10 +2,11 @@ import { createRouter, HTTPStatus, Result, successfulAuthentication } from 'aeri
 
 export const githubRouter = createRouter()
 
+const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token'
+
+const GITHUB_USER_URL = 'https://api.github.com/user'
+
 async function exchangeCodeForAccessToken(code: string) {
-
-  const githubURL = 'https://github.com/login/oauth/access_token'
-
   if(!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET){
     throw new Error('INVALID ENV FILES')
   }
@@ -19,7 +20,7 @@ async function exchangeCodeForAccessToken(code: string) {
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
   }
-  const githubResponse = await fetch(githubURL,{
+  const githubResponse = await fetch(GITHUB_TOKEN_URL,{
     method: 'POST',
     body: new URLSearchParams(body),
     headers: {
@@ -31,7 +32,7 @@ async function exchangeCodeForAccessToken(code: string) {
 }
 
 async function fetchUser(token: string) {
-  const userResponse = await fetch('https://api.github.com/user',{
+  const userResponse = await fetch(GITHUB_USER_URL,{
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
+const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
+const GITHUB_URL = 'https://github.com/login/oauth/authorize'
 
 async function githubAuth() {
-  const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
-  const GITHUB_URL = 'https://github.com/login/oauth/authorize'
   const params = {
     response_type: 'code',
     scope: 'user',
