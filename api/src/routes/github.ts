@@ -1,18 +1,18 @@
-import { createRouter } from 'aeria'
-import { authenticate } from 'aeria-sdk';
+import { createRouter, HTTPStatus, Result, successfulAuthentication } from 'aeria'
 
 export const githubRouter = createRouter()
 
-async function exangeCodeForAccessToken(code: string) {
+async function exchangeCodeForAccessToken(code: string) {
+
   const githubURL = 'https://github.com/login/oauth/access_token'
+
+  if(!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET){
+    throw new Error('INVALID ENV FILES')
+  }
+
   const CLIENT_ID = process.env.GITHUB_CLIENT_ID
-  if(CLIENT_ID === undefined || CLIENT_ID === null){
-    return console.log('no clientIDFound')
-  }
   const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-  if(CLIENT_SECRET === undefined || CLIENT_SECRET === null){
-    return console.log('no clientSECRETFound')
-  }
+
   const body = {
     code: code,
     grant_type: 'authorization_code',
@@ -42,41 +42,32 @@ async function fetchUser(token: string) {
 }
 
 githubRouter.POST('/githubAuth', async(context)=>{
-  try {
-    const gtiTempToken = await exangeCodeForAccessToken(context.request.payload.code)
-    const gitTempUser = await fetchUser(gtiTempToken.access_token)
+  const gitTempToken = await exchangeCodeForAccessToken(context.request.payload.code)
+  const gitTempUser = await fetchUser(gitTempToken.access_token)
 
-    const { error: userError ,result: userResult } = await context.collections.user.functions.get({
-      filters: {
-        github_id: gitTempUser.id.toString(),
+  const { error: userError ,result: user } = await context.collections.user.functions.get({
+    filters: {
+      github_id: gitTempUser.id.toString(),
+    },
+  })
+
+  if(userError){
+    const gitUserId = gitTempUser.id
+    const { error: userInsertError, result: userInsertResult } = await context.collections.user.functions.insert({
+      what: {
+        name: gitTempUser.login,
+        active: true,
+        github_id: gitUserId.toString(),
+        roles: ['root'],
+        email: `${gitTempUser.login}@user.github.com`,
       },
     })
-
-    console.log(gitTempUser.id)
-
-    if(userError){
-      const gitUserId = gitTempUser.id
-      const { error: userInsertError, result: userInsertResult } = await context.collections.user.functions.insert({
-        what: {
-          name: gitTempUser.login,
-          active: true,
-          github_id: gitUserId.toString(),
-          roles: ['root'],
-          email: `${gitTempUser.login}@user.github.com`,
-        },
-      })
-      if (userInsertError){
-        return console.log(userInsertError)
-      }
-      console.log(userInsertResult)
+    if (userInsertError){
+      return context.error(HTTPStatus.InternalServerError, {code: userInsertError.code})
     }
-    if (userResult){
-      //console.log(gitTempUser)
-      console.log(userResult)
-    }
-    authenticate()
-    //console.log(gitTempUser.id)
-  } catch (error) {
-    console.log('err', error)
+    return Result.result(await successfulAuthentication(userInsertResult._id, context))
+  }
+  if (user){
+    return Result.result(await successfulAuthentication(user._id, context))
   }
 })

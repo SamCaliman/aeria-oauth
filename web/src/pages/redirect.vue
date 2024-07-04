@@ -1,14 +1,31 @@
 <script setup lang="ts">
+import {CollectionItemWithId, Result, EndpointError} from '@aeriajs/types'
 
 const router = useRouter()
+const userStore = useStore('user')
+
+type SuccessfulAuthentication = {
+  user: CollectionItemWithId<'user'>,
+  token:{
+    type:'string',
+    content: 'string'
+  }
+}
 
 onMounted(async ()=>{
-    const CODE = router.currentRoute.value.query.code
-    if(CODE){
-        const response = await aeria.github.githubAuth.POST({
-            code: CODE
-        })
-        console.log(response)
+    const gitTempCode = router.currentRoute.value.query.code
+    if(gitTempCode){
+        const {error,result}: Result.Either<EndpointError, SuccessfulAuthentication>= await aeria.github.githubAuth.POST({
+            code: gitTempCode
+        }) as any
+        console.log(result)
+        if(result){
+          userStore.$actions.setCurrentUser(result)
+          window.open('http://localhost:8080/dashboard', '_self')
+        }
+        if(error){
+          window.open('http://localhost:8080/githubAuth')
+        }
     }
 })
 

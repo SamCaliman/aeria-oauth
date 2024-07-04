@@ -4,16 +4,14 @@
 async function githubAuth() {
   const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
   const GITHUB_URL = 'https://github.com/login/oauth/authorize'
-
   const params = {
     response_type: 'code',
     scope: 'user',
     client_id: CLIENT_ID,
     redirect_uri: 'http://localhost:8080/redirect'
   }
-  console.log(`${GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`)
   if(CLIENT_ID){
-    window.open(`${GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`)
+    window.open(`${GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`, '_self')
   }
 }
 
