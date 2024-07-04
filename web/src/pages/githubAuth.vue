@@ -3,6 +3,7 @@
 const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
 const GITHUB_URL = 'https://github.com/login/oauth/authorize'
 
+// Redirect User to github OAuth page, passing the client id as an paramenter
 async function githubAuth() {
   const params = {
     response_type: 'code',
@@ -39,8 +40,8 @@ async function githubAuth() {
         tw-text-white
       "
     >
-    fazer login com github
-    <aeria-button @click="githubAuth()">clique</aeria-button>
+    Login With Github
+    <aeria-button @click="githubAuth()">Login</aeria-button>
   </div>
   </section>
   

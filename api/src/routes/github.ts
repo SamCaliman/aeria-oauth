@@ -1,4 +1,4 @@
-import { createRouter, HTTPStatus, Result, successfulAuthentication } from 'aeria'
+import { ACError, createRouter, Result, successfulAuthentication } from 'aeria'
 
 export const githubRouter = createRouter()
 
@@ -6,6 +6,7 @@ const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token'
 
 const GITHUB_USER_URL = 'https://api.github.com/user'
 
+//exchange github temporary code for an Access Token so we can access user data
 async function exchangeCodeForAccessToken(code: string) {
   if(!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET){
     throw new Error('INVALID ENV FILES')
@@ -30,7 +31,7 @@ async function exchangeCodeForAccessToken(code: string) {
   const responseObject = await githubResponse.json()
   return responseObject
 }
-
+//get github user data with Access Token
 async function fetchUser(token: string) {
   const userResponse = await fetch(GITHUB_USER_URL,{
     method: 'GET',
@@ -43,29 +44,40 @@ async function fetchUser(token: string) {
 }
 
 githubRouter.POST('/githubAuth', async(context)=>{
-  const gitTempToken = await exchangeCodeForAccessToken(context.request.payload.code)
-  const gitTempUser = await fetchUser(gitTempToken.access_token)
+  const gitTempToken = await exchangeCodeForAccessToken(context.request.payload.code) //swap code for access token
+  const gitTempUser = await fetchUser(gitTempToken.access_token) // get github user data
 
+  //checks if there's an user with a github account on the database.
   const { error: userError ,result: user } = await context.collections.user.functions.get({
     filters: {
       github_id: gitTempUser.id.toString(),
     },
   })
-
+  
   if(userError){
-    const { error: userInsertError, result: userInsertResult } = await context.collections.user.functions.insert({
-      what: {
-        name: gitTempUser.login,
-        active: true,
-        github_id: gitTempUser.id.toString(),
-        roles: ['root'],
-        email: `${gitTempUser.login}@user.github.com`,
-      },
-    })
-    if (userInsertError){
-      return Result.error(userInsertError)
+    //Check what user error returns
+    switch(userError.code){
+      case ACError.ResourceNotFound:{
+        //if there's no user on database, create one.
+        const { error: userInsertError, result: userInsertResult } = await context.collections.user.functions.insert({
+          what: {
+            name: gitTempUser.login,
+            active: true,
+            github_id: gitTempUser.id.toString(),
+            roles: ['root'],
+            email: `${gitTempUser.login}@user.github.com`,
+          },
+        })
+        if (userInsertError){
+          return Result.error(userInsertError)
+        }
+        //Authenticate if successful, and return result to web
+        return Result.result(await successfulAuthentication(userInsertResult._id, context))
+      }
+      default: 
+        return Result.error(userError)
     }
-    return Result.result(await successfulAuthentication(userInsertResult._id, context))
   }
+  //if user already exists in database just authenticate and return result to web
   return Result.result(await successfulAuthentication(user._id, context))
 })

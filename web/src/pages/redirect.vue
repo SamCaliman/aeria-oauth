@@ -13,19 +13,22 @@ type SuccessfulAuthentication = {
 }
 
 onMounted(async ()=>{
+    //get github temporary code when returning from authorization page
     const gitTempCode = router.currentRoute.value.query.code
+
+    //if github code exists call API authentication route
     if(gitTempCode){
         const {error,result}: Result.Either<EndpointError, SuccessfulAuthentication>= await aeria.github.githubAuth.POST({
             code: gitTempCode
-        }) as any
+        }) as any //this casting 'as any' is necessary only because there's no contract on route
         if(error){
+          //if authentication fails, go back to login page
           router.push('/githubAuth')
-          //window.open('http://localhost:8080/githubAuth', '_self')
           return
         }
+        //if authentication succeeds, login returned user and go to dashboard
         userStore.$actions.setCurrentUser(result)
         router.push('/dashboard')
-        //window.open('http://localhost:8080/dashboard', '_self')
     }
 })
 
@@ -53,7 +56,7 @@ onMounted(async ()=>{
         tw-text-white
       "
     >
-    Aguarde enquanto verificamos seu login
+    Wait while we verify your login
   </div>
 </section>
   
