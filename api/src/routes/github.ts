@@ -43,7 +43,7 @@ async function fetchUser(token: string) {
   return response
 }
 
-githubRouter.POST('/githubAuth', async(context)=>{
+githubRouter.POST('/auth', async(context)=>{
   const gitTempToken = await exchangeCodeForAccessToken(context.request.payload.code) //swap code for access token
   const gitTempUser = await fetchUser(gitTempToken.access_token) // get github user data
 

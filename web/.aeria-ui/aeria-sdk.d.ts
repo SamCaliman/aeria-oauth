@@ -547,7 +547,7 @@ declare type MirrorRouter = {
   "/test": {
     "GET": null
   },
-  "/github/githubAuth": {
+  "/github/auth": {
     "POST": null
   }
 }
