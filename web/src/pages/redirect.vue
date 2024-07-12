@@ -21,7 +21,7 @@ onMounted(async ()=>{
     if(gitTempCode){
         const {error,result} = await aeria.github.auth.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
             code: gitTempCode
-        }) //this casting 'as any' is necessary only because there's no contract on route
+        })
         if(error){
           //if authentication fails, go back to login page
           router.push('/githubAuth')
