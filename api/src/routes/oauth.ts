@@ -170,7 +170,7 @@ AuthRouter.POST('/google', async(context)=>{
           what: {
             name: googleTempUser.name,
             active: true,
-            twitch_id: googleTempUser.sub.toString(),
+            google_id: googleTempUser.sub.toString(),
             roles: ['root'],
             email: `${googleTempUser.name}@user.template.com`,
           },
