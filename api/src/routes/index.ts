@@ -1,5 +1,5 @@
 import { createRouter, Result } from 'aeria'
-import { githubRouter } from './github.js'
+import { AuthRouter } from './oauth.js'
 
 export const router = createRouter()
 
@@ -16,4 +16,4 @@ router.GET('/test', async (context) => {
   })
 })
 
-router.group('/github', githubRouter)
+router.group('/OAuth', AuthRouter)

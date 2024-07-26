@@ -1,36 +1,37 @@
 <script setup lang="ts">
-import {CollectionItemWithId, Result, EndpointError} from '@aeriajs/types'
+import { type CollectionItemWithId, type Result, type EndpointError } from '@aeriajs/types'
 
 const router = useRouter()
+
 const userStore = useStore('user')
 const metaStore = useStore('meta')
 
 type SuccessfulAuthentication = {
   user: CollectionItemWithId<'user'>,
-  token:{
-    type:'string',
+  token: {
+    type: 'string',
     content: 'string'
   }
 }
 
 onMounted(async ()=>{
-    //get github temporary code when returning from authorization page
-    const gitTempCode = router.currentRoute.value.query.code
+    //get twitch temporary code when returning from authorization page
+    const twitchTempCode = router.currentRoute.value.query.code
 
-    //if github code exists call API authentication route
-    if(gitTempCode){
-        const {error,result} = await aeria.github.auth.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
-            code: gitTempCode
+    //if twitch code exists call API authentication route
+    if(twitchTempCode){
+        const { error,result } = await aeria.OAuth.twitch.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
+            code: twitchTempCode,
         })
         if(error){
           //if authentication fails, go back to login page
-          router.push('/githubAuth')
+          router.push('/OAuth')
           return
         }
         //if authentication succeeds, login returned user and go to dashboard
-        userStore.$actions.setCurrentUser(result) 
+        userStore.$actions.setCurrentUser(result)
         await metaStore.$actions.describe({
-          roles:true
+          roles: true,
         })
         router.push('/dashboard')
     }
@@ -39,13 +40,15 @@ onMounted(async ()=>{
 </script>
 
 <template>
-  <section class="
-  tw-w-full
-  tw-h-[100vh]
-  tw-bg-neutral-800
-  tw-flex
-  ">
-  <div
+  <section
+    class="
+      tw-w-full
+      tw-h-[100vh]
+      tw-bg-neutral-800
+      tw-flex
+    "
+  >
+    <div
       class="
         tw-rounded
         tw-bg-neutral-600
@@ -60,8 +63,7 @@ onMounted(async ()=>{
         tw-text-white
       "
     >
-    Wait while we verify your login
-  </div>
-</section>
-  
+      Wait while we verify your login
+    </div>
+  </section>
 </template>

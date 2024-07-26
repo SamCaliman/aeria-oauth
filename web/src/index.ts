@@ -30,6 +30,7 @@ const options = defineOptions({
 
 useApp(options).then(({ app, mount }) => {
   app.provide('noResultsComponent', NoResults)
+  
   mount()
 })
 

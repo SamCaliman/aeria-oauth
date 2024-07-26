@@ -20,7 +20,9 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/dashboard': RouteRecordInfo<'/dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     '/dashboard/': RouteRecordInfo<'/dashboard/', '/dashboard', Record<never, never>, Record<never, never>>,
-    '/githubAuth': RouteRecordInfo<'/githubAuth', '/githubAuth', Record<never, never>, Record<never, never>>,
-    '/redirect': RouteRecordInfo<'/redirect', '/redirect', Record<never, never>, Record<never, never>>,
+    '/OAuth': RouteRecordInfo<'/OAuth', '/OAuth', Record<never, never>, Record<never, never>>,
+    '/redirectGit': RouteRecordInfo<'/redirectGit', '/redirectGit', Record<never, never>, Record<never, never>>,
+    '/redirectGoogle': RouteRecordInfo<'/redirectGoogle', '/redirectGoogle', Record<never, never>, Record<never, never>>,
+    '/redirectTwitch': RouteRecordInfo<'/redirectTwitch', '/redirectTwitch', Record<never, never>, Record<never, never>>,
   }
 }

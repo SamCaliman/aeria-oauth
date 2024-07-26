@@ -9,7 +9,11 @@ declare global {
       | 'STORAGE_PATH'
       | 'STORAGE_TEMP_PATH'
       | 'GITHUB_CLIENT_ID'
-      | 'GITHUB_CLIENT_SECRET',
+      | 'GITHUB_CLIENT_SECRET'
+      | 'TWITCH_CLIENT_ID'
+      | 'TWITCH_CLIENT_SECRET'
+      | 'GOOGLE_CLIENT_ID'
+      | 'GOOGLE_CLIENT_SECRET',
       string
     > {}
   }
