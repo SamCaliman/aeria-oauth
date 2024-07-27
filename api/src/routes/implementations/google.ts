@@ -62,12 +62,12 @@ export const google = async(context: RouteContext)=>{
             return Result.error(userInsertError)
             }
             //Authenticate if successful, and return result to web
-            return Result.result(await successfulAuthentication(userInsertResult._id, context))
+            return Result.result(await successfulAuthentication(userInsertResult, context))
         }
         default:
             return Result.error(userError)
         }
     }
     //if user already exists in database just authenticate and return result to web
-    return Result.result(await successfulAuthentication(user._id, context))
+    return Result.result(await successfulAuthentication(user, context))
     }
