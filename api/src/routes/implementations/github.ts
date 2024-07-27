@@ -2,38 +2,41 @@ import { ACError, type RouteContext, Result, successfulAuthentication } from 'ae
 import {OAuth} from '../../oauth.js'
 
 export const github = async(context: RouteContext)=>{
+  
+  const {
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
+    GITHUB_USER_URL,
+    GITHUB_TOKEN_URL,
+    GITHUB_REDIRECT_URI,
+  } = process.env
+
   if(
-    !process.env.GITHUB_CLIENT_ID 
+    !GITHUB_CLIENT_ID 
     || 
-    !process.env.GITHUB_CLIENT_SECRET
+    !GITHUB_CLIENT_SECRET
     ||
-    !process.env.GITHUB_USER_URL
+    !GITHUB_USER_URL
     ||
-    !process.env.GITHUB_TOKEN_URL
+    !GITHUB_TOKEN_URL
     ||
-    !process.env.GITHUB_REDIRECT_URI
+    !GITHUB_REDIRECT_URI
   ){
     throw new Error('INVALID ENV FILES')
   }
 
-  const CLIENT_ID = process.env.GITHUB_CLIENT_ID
-  const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-  const USER_URL = process.env.GITHUB_USER_URL
-  const TOKEN_URL = process.env.GITHUB_TOKEN_URL
-  const REDIRECT_URI = process.env.GITHUB_REDIRECT_URI
-
   const gitTempToken = await OAuth.exchangeCodeForAccessToken(
     context.request.payload.code, 
-    CLIENT_ID, 
-    CLIENT_SECRET, 
-    TOKEN_URL,
-    REDIRECT_URI
+    GITHUB_CLIENT_ID, 
+    GITHUB_CLIENT_SECRET, 
+    GITHUB_TOKEN_URL,
+    GITHUB_REDIRECT_URI
   ) //swap code for access token
 
   const gitTempUser = await OAuth.fetchUser(
     gitTempToken.access_token, 
-    USER_URL, 
-    CLIENT_ID,
+    GITHUB_USER_URL, 
+    GITHUB_CLIENT_ID,
     "Accept: application/vnd.github+json"
   ) // get github user data
 

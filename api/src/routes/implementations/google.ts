@@ -2,38 +2,41 @@ import { ACError, type RouteContext, Result, successfulAuthentication } from 'ae
 import {OAuth} from '../../oauth.js'
 
 export const google = async(context: RouteContext)=>{
-    if(
-        !process.env.GOOGLE_CLIENT_ID 
+    
+    const {
+        GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET,
+        GOOGLE_USER_URL,
+        GOOGLE_TOKEN_URL,
+        GOOGLE_REDIRECT_URI,
+      } = process.env
+    
+      if(
+        !GOOGLE_CLIENT_ID 
         || 
-        !process.env.GOOGLE_CLIENT_SECRET
+        !GOOGLE_CLIENT_SECRET
         ||
-        !process.env.GOOGLE_USER_URL
+        !GOOGLE_USER_URL
         ||
-        !process.env.GOOGLE_TOKEN_URL
+        !GOOGLE_TOKEN_URL
         ||
-        !process.env.GOOGLE_REDIRECT_URI
-        ){
+        !GOOGLE_REDIRECT_URI
+      ){
         throw new Error('INVALID ENV FILES')
-        }
-
-    const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-    const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
-    const USER_URL = process.env.GOOGLE_USER_URL
-    const TOKEN_URL = process.env.GOOGLE_TOKEN_URL
-    const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI
+      }
 
     const googleTempToken = await OAuth.exchangeCodeForAccessToken(
         context.request.payload.code, 
-        CLIENT_ID, 
-        CLIENT_SECRET, 
-        TOKEN_URL, 
-        REDIRECT_URI
+        GOOGLE_CLIENT_ID, 
+        GOOGLE_CLIENT_SECRET, 
+        GOOGLE_TOKEN_URL, 
+        GOOGLE_REDIRECT_URI
     ) //swap code for access token
 
     const googleTempUser = await OAuth.fetchUser(
         googleTempToken.access_token ,
-        USER_URL, 
-        CLIENT_ID, 
+        GOOGLE_USER_URL, 
+        GOOGLE_CLIENT_ID, 
         'json'   
     ) // get google user data
 
