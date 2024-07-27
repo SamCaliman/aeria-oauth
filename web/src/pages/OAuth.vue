@@ -8,6 +8,7 @@ const TWITCH_URL = 'https://id.twitch.tv/oauth2/authorize'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
+
 // Redirect User to github OAuth page, passing the client id as an paramenter
 async function githubAuth() {
   const params = {
@@ -31,6 +32,7 @@ async function twitchAuth() {
     window.open(`${TWITCH_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
   }
 }
+
 async function googleAuth() {
   const params = {
     response_type: 'code',
