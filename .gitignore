@@ -2,5 +2,5 @@
 production.env
 dist
 node_modules
-api/release
+**/.aeria/out
 
