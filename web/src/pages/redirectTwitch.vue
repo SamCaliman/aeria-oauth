@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type CollectionItemWithId, type Result, type EndpointError } from '@aeriajs/types'
+import type { CollectionItemWithId, Result, EndpointError } from '@aeriajs/types'
 
 const router = useRouter()
 
@@ -20,7 +20,7 @@ onMounted(async ()=>{
 
     //if twitch code exists call API authentication route
     if(twitchTempCode){
-        const { error,result } = await aeria.OAuth.twitch.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
+        const { error,result } = await aeria.oauth.twitch.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
             code: twitchTempCode,
         })
         if(error){

@@ -1,22 +1,16 @@
+collection File extends aeria.file {}
+collection TempFile extends aeria.tempFile {}
 
-collection Pet {
-  icon "dog"
-  indexes {
-    name
+collection User extends aeria.user {
+  form {
+    github_id
+    twitch_id
+    google_id
   }
   properties {
-    name str
-    type enum @values(["dog", "cat"])
-    picture File @accept(["image/*"])
-  }
-  functions {
-    get @expose
-    getAll @expose
-    insert @expose
-    upload @expose
-  }
-  presets {
-    crud
+    github_id str
+    twitch_id str
+    google_id str
   }
 }
 

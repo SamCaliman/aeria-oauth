@@ -2,7 +2,7 @@ import { ACError, type RouteContext, Result, successfulAuthentication } from 'ae
 import {OAuth} from '../../oauth.js'
 
 export const github = async(context: RouteContext)=>{
-  
+
   const {
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET,
@@ -11,18 +11,8 @@ export const github = async(context: RouteContext)=>{
     GITHUB_REDIRECT_URI,
   } = process.env
 
-  if(
-    !GITHUB_CLIENT_ID 
-    || 
-    !GITHUB_CLIENT_SECRET
-    ||
-    !GITHUB_USER_URL
-    ||
-    !GITHUB_TOKEN_URL
-    ||
-    !GITHUB_REDIRECT_URI
-  ){
-    throw new Error('INVALID ENV FILES')
+  if( !GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET || !GITHUB_USER_URL || !GITHUB_TOKEN_URL || !GITHUB_REDIRECT_URI ) {
+    throw new Error('missing env variables')
   }
 
   const gitTempToken = await OAuth.exchangeCodeForAccessToken(
@@ -46,7 +36,7 @@ export const github = async(context: RouteContext)=>{
       github_id: gitTempUser.id.toString(),
     },
   })
-  
+
   if(userError){
     //Check what user error returns
     switch(userError.code){

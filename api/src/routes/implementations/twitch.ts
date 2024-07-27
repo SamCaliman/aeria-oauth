@@ -2,7 +2,6 @@ import { ACError, type RouteContext, Result, successfulAuthentication } from 'ae
 import {OAuth} from '../../oauth.js'
 
 export const twitch = async(context:RouteContext)=>{
-  
   const {
     TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET,
@@ -11,18 +10,8 @@ export const twitch = async(context:RouteContext)=>{
     TWITCH_REDIRECT_URI,
   } = process.env
 
-  if(
-    !TWITCH_CLIENT_ID 
-    || 
-    !TWITCH_CLIENT_SECRET
-    ||
-    !TWITCH_USER_URL
-    ||
-    !TWITCH_TOKEN_URL
-    ||
-    !TWITCH_REDIRECT_URI
-  ){
-    throw new Error('INVALID ENV FILES')
+  if( !TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET || !TWITCH_USER_URL || !TWITCH_TOKEN_URL || !TWITCH_REDIRECT_URI ) {
+    throw new Error('missing env variables')
   }
 
   const twitchTempToken = await OAuth.exchangeCodeForAccessToken(
