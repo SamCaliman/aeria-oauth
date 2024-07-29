@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
 const GITHUB_URL = 'https://github.com/login/oauth/authorize'
 

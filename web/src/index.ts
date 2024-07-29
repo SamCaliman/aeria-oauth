@@ -21,16 +21,10 @@ const options = defineOptions({
       ],
     },
   },
-  menuSchema: [
-    '/dashboard/',
-    '/dashboard/pet',
-    '/dashboard/user',
-  ],
 })
 
 useApp(options).then(({ app, mount }) => {
   app.provide('noResultsComponent', NoResults)
-  
   mount()
 })
 

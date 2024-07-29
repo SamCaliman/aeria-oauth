@@ -87,84 +87,6 @@ declare type MirrorDescriptions = {
       }
     }
   },
-  "pet": {
-    "$id": "pet",
-    "properties": {
-      "name": {
-        "type": "string"
-      },
-      "type": {
-        "enum": [
-          "dog",
-          "cat"
-        ]
-      },
-      "picture": {
-        "$ref": "file",
-        "accept": [
-          "image/*"
-        ],
-        "indexes": [
-          "name",
-          "link",
-          "type"
-        ]
-      },
-      "created_at": {
-        "type": "string",
-        "format": "date-time",
-        "noForm": true,
-        "readOnly": true,
-        "isTimestamp": true
-      },
-      "updated_at": {
-        "type": "string",
-        "format": "date-time",
-        "noForm": true,
-        "readOnly": true,
-        "isTimestamp": true
-      }
-    },
-    "icon": "dog",
-    "presets": [
-      "crud"
-    ],
-    "indexes": [
-      "name"
-    ],
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
-    "individualActions": {
-      "spawnEdit": {
-        "label": "action.edit",
-        "event": "spawnEdit",
-        "icon": "pencil-simple",
-        "translate": true
-      },
-      "viewItem": {
-        "label": "action.view",
-        "icon": "eye",
-        "translate": true,
-        "route": {
-          "name": "/dashboard/:collection/:id",
-          "setItem": true
-        }
-      },
-      "remove": {
-        "label": "action.remove",
-        "icon": "trash",
-        "ask": true,
-        "translate": true
-      }
-    }
-  },
   "tempFile": {
     "$id": "tempFile",
     "icon": "file",
@@ -435,38 +357,6 @@ declare type MirrorRouter = {
     }
   },
   "/file/removeAll": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/pet/get": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/pet/getAll": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/pet/insert": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/pet/upload": {
     "POST": {
       "roles": [
         "root"
