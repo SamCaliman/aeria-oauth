@@ -1,46 +1,52 @@
 <script setup lang="ts">
-const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
-const GITHUB_URL = 'https://github.com/login/oauth/authorize'
 
-const TWITCH_CLIENT_ID =  import.meta.env.VITE_TWITCH_CLIENT_ID
-const TWITCH_URL = 'https://id.twitch.tv/oauth2/authorize'
+const {
+  VITE_GITHUB_CLIENT_ID,
+  VITE_GITHUB_URL,
+  VITE_GITHUB_REDIRECT_URI,
+  VITE_TWITCH_CLIENT_ID,
+  VITE_TWITCH_URL,
+  VITE_TWITCH_REDIRECT_URI,
+  VITE_GOOGLE_CLIENT_ID,
+  VITE_GOOGLE_URL,
+  VITE_GOOGLE_REDIRECT_URI,
+  VITE_GOOGLE_SCOPE,
+} = import.meta.env
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
-const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
 
 // Redirect User to github OAuth page, passing the client id as an paramenter
 async function githubAuth() {
   const params = {
     response_type: 'code',
     scope: 'user',
-    client_id: GITHUB_CLIENT_ID,
-    redirect_uri: 'http://localhost:8080/redirectGit'
+    client_id: VITE_GITHUB_CLIENT_ID,
+    redirect_uri: VITE_GITHUB_REDIRECT_URI
   }
-  if(GITHUB_CLIENT_ID){
-    window.open(`${GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`, '_self')
+  if(VITE_GITHUB_CLIENT_ID){
+    window.open(`${VITE_GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`, '_self')
   }
 }
 
 async function twitchAuth() {
   const params = {
     response_type: 'code',
-    client_id: TWITCH_CLIENT_ID,
-    redirect_uri: 'http://localhost:8080/redirectTwitch',
+    client_id: VITE_TWITCH_CLIENT_ID,
+    redirect_uri: VITE_TWITCH_REDIRECT_URI,
   }
-  if(TWITCH_CLIENT_ID){
-    window.open(`${TWITCH_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
+  if(VITE_TWITCH_CLIENT_ID){
+    window.open(`${VITE_TWITCH_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
   }
 }
 
 async function googleAuth() {
   const params = {
     response_type: 'code',
-    client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: 'http://localhost:8080/redirectGoogle',
-    scope:'https://www.googleapis.com/auth/userinfo.profile'
+    client_id: VITE_GOOGLE_CLIENT_ID,
+    redirect_uri: VITE_GOOGLE_REDIRECT_URI,
+    scope:VITE_GOOGLE_SCOPE
   }
-  if(GOOGLE_CLIENT_ID){
-    window.open(`${GOOGLE_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
+  if(VITE_GOOGLE_CLIENT_ID){
+    window.open(`${VITE_GOOGLE_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
   }
 }
 </script>

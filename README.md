@@ -53,11 +53,16 @@ GOOGLE_REDIRECT_URI=http://localhost:8080/redirectGoogle
 ### web
 ```
 VITE_GITHUB_CLIENT_ID = your_client_id
+VITE_GITHUB_URL=https://github.com/login/oauth/authorize
+VITE_GITHUB_REDIRECT_URI=http://localhost:8080/redirectGit
 
 VITE_TWITCH_CLIENT_ID = your_client_id
+VITE_TWITCH_URL=https://id.twitch.tv/oauth2/authorize
+VITE_TWITCH_REDIRECT_URI=http://localhost:8080/redirectTwitch
 
 VITE_GOOGLE_CLIENT_ID = your_client_id
-
+VITE_GOOGLE_REDIRECT_URI=http://localhost:8080/redirectGoogle
+VITE_GOOGLE_SCOPE=https://www.googleapis.com/auth/userinfo.profile
 ```
 
 ## Observation
