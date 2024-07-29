@@ -20,7 +20,7 @@ onMounted(async ()=>{
 
     //if twitch code exists call API authentication route
     if(googleTempCode){
-        const { error,result } = await aeria.oauth.google.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
+        const { error,result } = await aeria.OAuth.google.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
             code: googleTempCode,
         })
         if(error){

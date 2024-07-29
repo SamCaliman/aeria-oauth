@@ -20,7 +20,7 @@ onMounted(async ()=>{
 
     //if twitch code exists call API authentication route
     if(twitchTempCode){
-        const { error,result } = await aeria.oauth.twitch.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
+        const { error,result } = await aeria.OAuth.twitch.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
             code: twitchTempCode,
         })
         if(error){

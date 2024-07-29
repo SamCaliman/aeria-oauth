@@ -18,7 +18,7 @@ onMounted(async ()=>{
     const gitTempCode = router.currentRoute.value.query.code
     //if github code exists call API authentication route
     if(gitTempCode){
-        const {error,result} = await aeria.oauth.github.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
+        const {error,result} = await aeria.OAuth.github.POST<Result.Either<EndpointError, SuccessfulAuthentication>>({
             code: gitTempCode
         })
         if(error){
