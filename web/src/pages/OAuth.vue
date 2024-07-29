@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const {
   VITE_GITHUB_CLIENT_ID,
   VITE_GITHUB_URL,
@@ -13,7 +12,6 @@ const {
   VITE_GOOGLE_SCOPE,
 } = import.meta.env
 
-
 // Redirect User to github OAuth page, passing the client id as an paramenter
 async function githubAuth() {
   const params = {
@@ -22,9 +20,7 @@ async function githubAuth() {
     client_id: VITE_GITHUB_CLIENT_ID,
     redirect_uri: VITE_GITHUB_REDIRECT_URI
   }
-  if(VITE_GITHUB_CLIENT_ID){
-    window.open(`${VITE_GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`, '_self')
-  }
+  window.open(`${VITE_GITHUB_URL}`+'?'+`${new URLSearchParams(params).toString()}`, '_self')
 }
 
 async function twitchAuth() {
@@ -33,9 +29,7 @@ async function twitchAuth() {
     client_id: VITE_TWITCH_CLIENT_ID,
     redirect_uri: VITE_TWITCH_REDIRECT_URI,
   }
-  if(VITE_TWITCH_CLIENT_ID){
-    window.open(`${VITE_TWITCH_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
-  }
+  window.open(`${VITE_TWITCH_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
 }
 
 async function googleAuth() {
@@ -43,20 +37,18 @@ async function googleAuth() {
     response_type: 'code',
     client_id: VITE_GOOGLE_CLIENT_ID,
     redirect_uri: VITE_GOOGLE_REDIRECT_URI,
-    scope:VITE_GOOGLE_SCOPE
+    scope: VITE_GOOGLE_SCOPE
   }
-  if(VITE_GOOGLE_CLIENT_ID){
-    window.open(`${VITE_GOOGLE_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
-  }
+  window.open(`${VITE_GOOGLE_URL}` + '?' + `${new URLSearchParams(params).toString()}`, '_self')
 }
 </script>
 
 <template>
   <section class="
-  tw-w-full
-  tw-h-[100vh]
-  tw-bg-neutral-800
-  tw-flex
+    tw-w-full
+    tw-h-[100vh]
+    tw-bg-neutral-800
+    tw-flex
   "> 
     <div
       class="
